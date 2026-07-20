@@ -6,11 +6,11 @@ read -sp "input password : " PASSWORD
 
 echo 'Installing Sparow OS' && 
 
-mkfs.ext4 /dev/$PROC &&
-mount /dev/$PROC /mnt &&
-mkfs.vfat -F32 /dev/$BOOT &&
+mkfs.ext4 $PROC &&
+mount $PROC /mnt &&
+mkfs.vfat -F32 $BOOT &&
 mkdir -p /mnt/boot &&
-mount /dev/$BOOT /mnt/boot &&
+mount $BOOT /mnt/boot &&
 
 if grep -q "GenuineIntel" /proc/cpuinfo; then
     pacstrap /mnt intel-ucode base base-devel linux linux-firmware grub efibootmgr os-prober wireless-regdb sof-firmware bluez-utils  networkmanager dolphin xorg-server pipewire pipewire-alsa pipewire-jack pipewire-pulse mkinitcpio discover firefox plasma-login-manager plasma-nm plasma-pa xdg-desktop-portal-kde systemsettings spectacle plasma-desktop breeze-gtk breeze-cursors breeze plasma-workspace bluedevil --noconfirm
