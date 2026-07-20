@@ -41,7 +41,7 @@ arch-chroot /mnt hwclock --systohc &&
 
 ## main user
 arch-chroot /mnt useradd -m $USERNAME &&
-arch-chroot /mnt passwd $PASSWORD &&
+echo "$USERNAME:$PASSWORD" | arch-chroot /mnt chpasswd &&
 echo "$USERNAME ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/user &&
 
 
