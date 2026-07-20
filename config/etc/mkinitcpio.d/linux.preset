@@ -1,0 +1,23 @@
+# sparow OS IMAGE PRESET
+# mkinitcpio preset file for the 'linux-lqx' package
+
+
+ALL_kver="/boot/kernel/vmlinuz-linux"
+ALL_config="/etc/mkinitcpio.d/default.conf"
+ALL_kerneldest="/boot/kernel/vmlinuz-linux"
+
+
+PRESETS=('default')
+#PRESETS=('default' 'fallback')
+
+
+#default_config="/etc/mkinitcpio.conf"
+#default_image="/boot/sparow.img"
+default_uki="/boot/efi/linux/sparow.efi"
+#default_options="--splash /usr/share/systemd/bootctl/sparow.bmp"
+
+
+#fallback_config="/etc/mkinitcpio.conf"
+#fallback_image="/boot/sparow-fallback.img"
+#fallback_uki="/efi/EFI/Linux/sparow.efi"
+#fallback_options="-S autodetect"

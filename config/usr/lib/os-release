@@ -1,0 +1,11 @@
+NAME="Sparow"
+PRETTY_NAME="Sparow"
+ID=sparow
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://sparow.yuros.org"
+DOCUMENTATION_URL="https://sparow.yuros.org/docs"
+SUPPORT_URL="https://sparow.yuros.org/forum"
+BUG_REPORT_URL="https://sparow.yuros.org/issues"
+PRIVACY_POLICY_URL="https://sparow.org/privacy/"
+LOGO=sparow-logo
