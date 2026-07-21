@@ -29,9 +29,6 @@ rm -fr installer &&
 ## fstab
 genfstab -U /mnt > /mnt/etc/fstab && 
 
-## network
-cp /etc/systemd/network/* /mnt/etc/systemd/network &&
-
 ## locale
 arch-chroot /mnt locale-gen &&
 
