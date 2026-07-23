@@ -52,25 +52,25 @@ echo -e "${NC}"
 log_info "Silakan masukkan detail partisi dengan teliti (contoh: /dev/sda1 atau /dev/nvme0n1p1):"
 echo
 
-read -p "  1. Partisi Boot/EFI Sparow OS : " boot
+read -p "  1. Partisi Boot : " boot
 while [[ -z "$boot" || ! -b "$boot" ]]; do
     log_error "Partisi '$boot' tidak valid."
     read -p "  1. Partisi Boot/EFI Sparow OS: " boot
 done
 
-read -p "  2. Partisi Root Amanda OS : " root
+read -p "  2. Partisi Root : " root
 while [[ -z "$root" || ! -b "$root" ]]; do
     log_error "Partisi '$root' tidak valid."
     read -p "  2. Partisi Root Sparow OS: " root
 done
 
-read -p "  3. Partisi Home Sparow OS : " home
+read -p "  3. Partisi Home : " home
 while [[ -z "$home" || ! -b "$home" ]]; do
     log_error "Partisi '$home' tidak valid."
     read -p "  3. Partisi Home Amanda OS: " home
 done
 
-read -p "  4. Partisi Swap Sparow OS : " swap
+read -p "  4. Partisi Swap : " swap
 while [[ -z "$swap" || ! -b "$swap" ]]; do
     log_error "Partisi '$swap' tidak valid."
     read -p "  4. Partisi Swap Amanda OS: " swap
