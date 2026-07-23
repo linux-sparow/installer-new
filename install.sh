@@ -246,7 +246,7 @@ mv /boot/vmlinuz-* /boot/kernel/ &&
 mv /boot/*-ucode.img /boot/kernel/ &&
 mkinitcpio -P &&
 
-# --- 4.6. GRUB Setup (sd-encrypt & Plymouth arguments) ---
+# --- 4.6. GRUB Setup  ---
 echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=SparowOS
 
