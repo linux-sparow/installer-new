@@ -228,14 +228,7 @@ echo "$username:$pw" | chpasswd
 echo "root:$pw" | chpasswd
 
 # ---- 4.4 App Mongodb ---
-su - "$username" -c "
-cd /tmp
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -s --noconfirm"
 
-su - "$username" -c "
-yay -S --noconfirm mongodb-bin"
 
 # --- 4.5. Sudoers Configuration ---
 echo "Mengonfigurasi Sudoers..."
@@ -249,7 +242,6 @@ systemctl enable firewalld
 systemctl enable bluetooth.service
 systemctl enable plasmalogin.service
 systemctl enable --global pipewire-pulse
-systemctl enable mongodb
 
 # --- 4.7 App payload cms ---
 
