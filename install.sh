@@ -188,7 +188,7 @@ pacstrap -K /mnt base base-devel wireless-regdb linux $firms $ucodes \
 
 
 # Configuration
-rm /mnt/usr/share/wallpapers/Next/contents/images/*
+rm /mnt/usr/share/wallpapers/Next/contents/images/* &&
 git clone https://github.com/linux-sparow/installer-new.git installer &&
 cp -fr installer/config/* /mnt/ &&
 rm -fr installer &&
@@ -245,6 +245,7 @@ echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Sparow
 
 echo "Mengonfigurasi parameter Kernel"
+sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="Sparow OS"/' /etc/default/grub
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=UUID='"$root_uuid"' quiet"/' /etc/default/grub
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
