@@ -1,5 +1,5 @@
 # sparow OS IMAGE PRESET
-# mkinitcpio preset file for the 'linux-lqx' package
+# mkinitcpio preset file for the 'linux' package
 
 
 ALL_kver="/boot/kernel/vmlinuz-linux"
