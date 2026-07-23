@@ -2,9 +2,9 @@
 # mkinitcpio preset file for the 'linux' package
 
 
-ALL_kver="/boot/kernel/vmlinuz-linux"
+ALL_kver="/boot/vmlinuz-linux"
 ALL_config="/etc/mkinitcpio.d/default.conf"
-ALL_kerneldest="/boot/kernel/vmlinuz-linux"
+ALL_kerneldest="/boot/vmlinuz-linux"
 
 
 PRESETS=('default')
@@ -13,7 +13,7 @@ PRESETS=('default')
 
 #default_config="/etc/mkinitcpio.conf"
 #default_image="/boot/sparow.img"
-default_uki="/boot/efi/linux/sparow.efi"
+default_uki="/boot/EFI/Linux/sparow.efi"
 #default_options="--splash /usr/share/systemd/bootctl/sparow.bmp"
 
 
