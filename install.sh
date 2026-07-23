@@ -203,6 +203,8 @@ sleep 2
 # --- 4. SYSTEM CONFIGURATION (CHROOT) ---
 log_info "Memasuki chroot untuk konfigurasi sistem..."
 
+root_uuid=$(blkid -s UUID -o value "$root")
+
 arch-chroot /mnt /bin/bash <<EOF
 set -e
 
@@ -244,10 +246,10 @@ mkinitcpio -P &&
 
 # --- 4.6. GRUB Setup  ---
 echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=SparowOS
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Sparow
 
 echo "Mengonfigurasi parameter Kernel"
-sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=$(root) quiet"/' /etc/default/grub
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=UUID='"$root_uuid"' quiet"/' /etc/default/grub
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
 # Buat konfigurasi GRUB
