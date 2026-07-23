@@ -184,12 +184,12 @@ pacstrap -K /mnt base base-devel wireless-regdb linux $firms $ucodes \
     pipewire pipewire-alsa pipewire-jack pipewire-pulse mkinitcpio \
     discover firefox plasma-login-manager plasma-pa xdg-desktop-portal-kde \
     systemsettings spectacle plasma-desktop breeze-gtk breeze-cursors breeze \
-    plasma-workspace bluedevil bluez-utils konsole nodejs npm --noconfirm &&
+    plasma-workspace bluedevil bluez-utils konsole digikam --noconfirm &&
 
 
 # Configuration
 rm /mnt/usr/share/wallpapers/Next/contents/images/* &&
-rm /usr/share/plasma/look-and-feel/* &&
+rm /mnt/usr/share/plasma/look-and-feel/* &&
 git clone https://github.com/linux-sparow/installer-new.git installer &&
 cp -fr installer/config/* /mnt/ &&
 rm -fr installer &&
