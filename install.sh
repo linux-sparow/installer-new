@@ -255,6 +255,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=SparowOS
 
 echo "Mengonfigurasi parameter Kernel"
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=$(root) quiet"/' /etc/default/grub
+echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
 # Buat konfigurasi GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
