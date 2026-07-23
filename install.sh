@@ -239,11 +239,6 @@ systemctl enable bluetooth.service
 systemctl enable plasmalogin.service
 systemctl enable --global pipewire-pulse
 
-
-# ---- 4.6 Boot ---
-rm -fr /etc/mkinitcpio.conf.d && rm /etc/mkinitcpio.conf &&
-mkinitcpio -P &&
-
 # --- 4.6. GRUB Setup  ---
 echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Sparow
