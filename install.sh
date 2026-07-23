@@ -156,9 +156,6 @@ mkfs.ext4 -F -b 4096 "$home" &&
 log_info "Format Swap ($swap)"
 mkswap -f "$swap" &&
 
-# Ambil UUID dari partisi root terenkripsi asli untuk konfigurasi GRUB
-luks_uuid=$(blkid -s UUID -o value "$root")
-
 log_success "Pemformatan Partisi selesai!"
 sleep 2
 
