@@ -227,20 +227,33 @@ useradd -m -G wheel -s /bin/bash "$username"
 echo "$username:$pw" | chpasswd
 echo "root:$pw" | chpasswd
 
-# --- 4.4. Sudoers Configuration ---
+# ---- 4.4 App Mongodb ---
+su - "$username" -c "
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si --noconfirm"
+
+su - "$username" -c "
+yay -S --noconfirm mongodb-bin"
+
+# --- 4.5. Sudoers Configuration ---
 echo "Mengonfigurasi Sudoers..."
 echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/10-installer-wheel
 chmod 440 /etc/sudoers.d/10-installer-wheel
 
-# --- 4.5. Services Activation ---
+# --- 4.6. Services Activation ---
 echo "Mengaktifkan layanan sistem dasar..."
 systemctl enable NetworkManager
 systemctl enable firewalld
 systemctl enable bluetooth.service
 systemctl enable plasmalogin.service
 systemctl enable --global pipewire-pulse
+systemctl enable mongodb
 
-# --- 4.6. GRUB Setup  ---
+# --- 4.7 App payload cms ---
+
+# --- 4.8. GRUB Setup  ---
 echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Sparow
 
@@ -251,6 +264,7 @@ echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
 # Buat konfigurasi GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+
 
 EOF
 
