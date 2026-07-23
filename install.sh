@@ -181,7 +181,7 @@ sleep 2
 # --- 3. PACKAGES  ---
 log_info "Instalasi Packages Sparow OS"
 
-pacstrap -K /mnt base base-devel wireless-regdb linux-lts linux-lts-headers $firms $ucodes \
+pacstrap -K /mnt base base-devel wireless-regdb linux $firms $ucodes \
     networkmanager plasma-nm firewalld git wget neovim \
     efibootmgr grub os-prober iptables-nft dolphin xorg-server \
     pipewire pipewire-alsa pipewire-jack pipewire-pulse mkinitcpio \
