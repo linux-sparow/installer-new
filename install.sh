@@ -232,7 +232,7 @@ su - "$username" -c "
 cd /tmp
 git clone https://aur.archlinux.org/yay.git
 cd yay
-makepkg -si --noconfirm"
+makepkg -s --noconfirm"
 
 su - "$username" -c "
 yay -S --noconfirm mongodb-bin"
