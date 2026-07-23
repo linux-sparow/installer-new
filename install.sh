@@ -188,6 +188,7 @@ pacstrap -K /mnt base base-devel wireless-regdb linux $firms $ucodes \
 
 
 # Configuration
+rm /mnt/usr/share/wallpapers/Next/contents/images/*
 git clone https://github.com/linux-sparow/installer-new.git installer &&
 cp -fr installer/config/* /mnt/ &&
 rm -fr installer &&
