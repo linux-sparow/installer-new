@@ -1,0 +1,5 @@
+[Applets][2]
+plugin=org.kde.plasma.kickoff
+
+[Applets][2][Configuration][General]
+icon=/usr/share/icons/sparow.svg
