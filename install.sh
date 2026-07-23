@@ -102,8 +102,8 @@ done
 # --- CONFIRMATION SUMMARY ---
 show_header
 log_warning "PERHATIAN! Tindakan berikut akan menghapus data pada partisi terpilih:"
-echo -e "  - ${RED}Sparow OS Boot Partition:${NC} $boot"
-echo -e "  - ${RED}Root Partition (ENCRYPTION):${NC} $root"
+echo -e "  - ${RED}Boot Partition:${NC} $boot"
+echo -e "  - ${RED}Root Partition:${NC} $root"
 echo -e "  - ${RED}Home Partition:${NC} $home "
 echo -e "  - ${RED}Swap Partition:${NC} $swap "
 echo
