@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Sparow CMS
+Comment=Sparow OS Content Management Platform
+Exec=xdg-open http://localhost:3000/admin
+Icon=applications-development
+Terminal=false
+Type=Application
+Categories=Webrowser
