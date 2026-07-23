@@ -240,10 +240,6 @@ systemctl enable --global pipewire-pulse
 
 # ---- 4.6 Boot ---
 rm -fr /etc/mkinitcpio.conf.d && rm /etc/mkinitcpio.conf &&
-mkdir -p /boot/{efi,kernel} &&
-mkdir -p /boot/efi/{linux,boot,systemd} &&
-mv /boot/vmlinuz-* /boot/kernel/ &&
-mv /boot/*-ucode.img /boot/kernel/ &&
 mkinitcpio -P &&
 
 # --- 4.6. GRUB Setup  ---
