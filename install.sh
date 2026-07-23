@@ -245,7 +245,7 @@ echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Sparow
 
 echo "Mengonfigurasi parameter Kernel"
-sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="Sparow OS"/' /etc/default/grub
+sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="Sparow"/' /etc/default/grub
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=UUID='"$root_uuid"' quiet"/' /etc/default/grub
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
