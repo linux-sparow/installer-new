@@ -121,7 +121,7 @@ for j in "${!array[@]}"; do
 done
 
 read -p "Masukkan nomor Kota: " region
-
+fi
 
 # --- CONFIRMATION SUMMARY ---
 show_header
