@@ -55,25 +55,25 @@ echo
 read -p "  1. Partisi Boot : " boot
 while [[ -z "$boot" || ! -b "$boot" ]]; do
     log_error "Partisi '$boot' tidak valid."
-    read -p "  1. Partisi Boot/EFI Sparow OS: " boot
+    read -p "  1. Partisi Boot: " boot
 done
 
 read -p "  2. Partisi Root : " root
 while [[ -z "$root" || ! -b "$root" ]]; do
     log_error "Partisi '$root' tidak valid."
-    read -p "  2. Partisi Root Sparow OS: " root
+    read -p "  2. Partisi Root: " root
 done
 
 read -p "  3. Partisi Home : " home
 while [[ -z "$home" || ! -b "$home" ]]; do
     log_error "Partisi '$home' tidak valid."
-    read -p "  3. Partisi Home Sparow OS: " home
+    read -p "  3. Partisi Home: " home
 done
 
 read -p "  4. Partisi Swap : " swap
 while [[ -z "$swap" || ! -b "$swap" ]]; do
     log_error "Partisi '$swap' tidak valid."
-    read -p "  4. Partisi Swap Sparow OS: " swap
+    read -p "  4. Partisi Swap: " swap
 done
 
 
@@ -134,7 +134,6 @@ else
     log_error "Nomor benua tidak valid. Menggunakan default UTC."
     tz="UTC"
 fi
-
 
 
 # --- CONFIRMATION SUMMARY ---
