@@ -171,8 +171,8 @@ select_locale() {
     while true; do
         read -rp "Bahasa: " sys_locale
 
-        if [[ -n "${locales[$country]}" ]]; then
-            language="${locales[$country]}"
+        if [[ -n "${locales[$sys_locale]}" ]]; then
+            language="${locales[$sys_locale]}"
             break
         fi
 
