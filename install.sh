@@ -107,7 +107,7 @@ for i in "${!benua_list[@]}"; do
     printf "[%d] %s\n" "$((i+1))" "${benua_list[$i]}"
 done
 
-read -p "Masukkan nomor Benua: " benua
+read -p "Masukkan Nama Benua: " benua
 
 if [[ "$benua" -gt 0 && "$benua" -le "${#benua_list[@]}" ]]; then
     pilih_benua="${benua_list[$((benua-1))]}"
@@ -120,7 +120,7 @@ for j in "${!array[@]}"; do
     printf "[%d] %s/%s\n" "$((j+1))" "$pilih_benua" "${array[$j]}"
 done
 
-read -p "Masukkan nomor Kota: " region
+read -p "Masukkan Nama Kota: " region
 fi
 
 tz=$benua/$region
