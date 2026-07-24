@@ -99,6 +99,7 @@ while [[ -z "$pw" ]]; do
     echo
 done
 
+#--- TIMEZONE ---
 echo
 log_info "Berikut List Timezone Yang Tersedia:"
 benua_list=("Africa" "America" "Antarctica" "Asia" "Atlantic" "Australia" "Europe" "Indian" "Pacific")
@@ -140,6 +141,10 @@ else
     log_error "Nomor benua tidak valid. Menggunakan default UTC."
     tz="UTC"
 fi
+
+#--- LOCALE ---
+
+
 
 
 # --- CONFIRMATION SUMMARY ---
