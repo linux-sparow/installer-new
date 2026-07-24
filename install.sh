@@ -116,10 +116,17 @@ if [[ "$benua" -gt 0 && "$benua" -le "${#benua_list[@]}" ]]; then
     
     mapfile -t array < <(find /usr/share/zoneinfo/$pilih_benua -type f -printf '%P\n' | sort)
     
-    for j in "${!array[@]}"; do
-        printf "[%d] %s/%s\n" "$((j+1))" "$pilih_benua" "${array[$j]}"
-    done
-
+    cetak_daftar_kota() {
+        for j in "${!array[@]}"; do
+            printf "[%d] %s/%s\n" "$((j+1))" "$pilih_benua" "${array[$j]}"
+        done
+    }
+    
+    log_info "Gunakan Panah Atas/Bawah untuk scroll daftar kota."
+    log_info "Tekan tombol 'Q' jika sudah menemukan nomor kota Anda."
+    sleep 2
+    cetak_daftar_kota | less -QX
+    
     read -p "Masukkan Nomor Kota: " region
     
     if [[ "$region" -gt 0 && "$region" -le "${#array[@]}" ]]; then
