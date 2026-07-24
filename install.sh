@@ -145,7 +145,7 @@ fi
 #--- LOCALE ---
 echo
 log_info "Berikut List Huruf Depan Bahasa (Locale) Yang Tersedia:"
-mapfile -t inisial_list < <(grep -E '^[a-z]{2}_' /etc/locale.gen | awk '{print $1}' | cut -d'_' -f1 | sort -u)
+mapfile -t inisial_list < <(sed 's/^#\s*//' /etc/locale.gen | grep -E '^[a-z]{2}_' | awk '{print $1}' | cut -d'_' -f1 | sort -u)
 
 for k in "${!inisial_list[@]}"; do
     printf "[%d] %s\n" "$((k+1))" "${inisial_list[$k]}"
@@ -158,8 +158,7 @@ if [[ "$inisial_pilihan" -gt 0 && "$inisial_pilihan" -le "${#inisial_list[@]}" ]
     
     clear
     
-    # Ambil semua variasi locale utf-8 berdasarkan inisial bahasa yang dipilih
-    mapfile -t locale_array < <(grep -E "^${pilih_inisial}_" /etc/locale.gen | grep "UTF-8" | awk '{print $1}' | sort)
+    mapfile -t locale_array < <(sed 's/^#\s*//' /etc/locale.gen | grep -E "^${pilih_inisial}_" | grep "UTF-8" | awk '{print $1}' | sort)
     
     cetak_daftar_locale() {
         for l in "${!locale_array[@]}"; do
@@ -176,15 +175,14 @@ if [[ "$inisial_pilihan" -gt 0 && "$inisial_pilihan" -le "${#inisial_list[@]}" ]
     read -p "Masukkan Nomor Variasi Bahasa: " locale_pilih
     
     if [[ "$locale_pilih" -gt 0 && "$locale_pilih" -le "${#locale_array[@]}" ]]; then
-        # Mengambil kode locale asli lengkap (contoh: id_ID.UTF-8 atau en_US.UTF-8)
-        locale="${locale_array[$((locale_pilih-1))]}"
+        sys_locale="${locale_array[$((locale_pilih-1))]}"
     else
         log_error "Nomor variasi bahasa tidak valid. Menggunakan default en_US.UTF-8."
-        locale="en_US.UTF-8"
+        sys_locale="en_US.UTF-8"
     fi
 else
     log_error "Nomor inisial bahasa tidak valid. Menggunakan default en_US.UTF-8."
-    locale="en_US.UTF-8"
+    sys_locale="en_US.UTF-8"
 fi
 
 
@@ -199,7 +197,7 @@ echo
 echo -e "  - ${CYAN}Username:${NC} $username"
 echo -e "  - ${CYAN}Hostname:${NC} $hostname"
 echo -e "  - ${CYAN}Region:${NC} $tz"
-echo -e "  - ${CYAN}Region:${NC} $locale"
+echo -e "  - ${CYAN}Language:${NC} $sys_locale"
 echo
 
 read -p "Apakah Anda yakin ingin melanjutkan instalasi? (ketik 'yes' untuk konfirmasi): " confirm
