@@ -143,63 +143,46 @@ else
 fi
 
 #--- LOCALE ---
-echo
-log_info "Berikut List Bahasa (Locale) Yang Tersedia:"
+select_locale() {
+    clear
 
-# 1. Ambil SEMUA baris kode locale asli yang berakhiran UTF-8 dari file /etc/locale.gen
-mapfile -t locale_raw < <(sed 's/^#\s*//' /etc/locale.gen | grep "UTF-8" | awk '{print $1}' | sort -u)
+    declare -A locales=(
+        ["Australia"]="en_AU.UTF-8"
+        ["Canada"]="en_CA.UTF-8"
+        ["China"]="zh_CN.UTF-8"
+        ["France"]="fr_FR.UTF-8"
+        ["Germany"]="de_DE.UTF-8"
+        ["Indonesia"]="id_ID.UTF-8"
+        ["Italy"]="it_IT.UTF-8"
+        ["Japan"]="ja_JP.UTF-8"
+        ["Malaysia"]="ms_MY.UTF-8"
+        ["Singapore"]="en_SG.UTF-8"
+        ["South Korea"]="ko_KR.UTF-8"
+        ["Thailand"]="th_TH.UTF-8"
+        ["United Kingdom"]="en_GB.UTF-8"
+        ["United States"]="en_US.UTF-8"
+        ["Vietnam"]="vi_VN.UTF-8"
+    )
 
-# 2. Fungsi otomatis untuk membaca database internal Linux dan mengubah kode menjadi kata penuh manusia
-cetak_daftar_locale() {
-    for l in "${!locale_raw[@]}"; do
-        local kode_clean lang_code negara_code nama_bahasa nama_negara
-        
-        # Potong string (contoh: en_US.UTF-8 menjadi en_US, lalu dipisah jadi en dan US)
-        kode_clean=$(echo "${locale_raw[$l]}" | cut -d'.' -f1)
-        lang_code=$(echo "$kode_clean" | cut -d'_' -f1)
-        negara_code=$(echo "$kode_clean" | cut -d'_' -f2)
-        
-        # Ekstrak kata pertama dari deskripsi nama bahasa resmi di folder internal i18n
-        if [ -f "/usr/share/i18n/locales/$lang_code" ]; then
-            nama_bahasa=$(grep -i '^title' "/usr/share/i18n/locales/$lang_code" | head -n1 | cut -d'"' -f2 | awk '{print $1}')
+    echo "Available Countries:"
+    printf "%s\n" "${!locales[@]}" | sort | column
+    echo
+
+    while true; do
+        read -rp "Bahasa: " sys_locale
+
+        if [[ -n "${locales[$country]}" ]]; then
+            language="${locales[$country]}"
+            break
         fi
-        
-        # Jika file deskripsi wilayah spesifik (seperti en_US) ada, ambil deskripsinya untuk nama negara
-        if [ -f "/usr/share/i18n/locales/$kode_clean" ]; then
-            nama_negara=$(grep -i '^title' "/usr/share/i18n/locales/$kode_clean" | head -n1 | cut -d'"' -f2 | awk '{print $(NF-1)}')
-        fi
 
-        # Pembersihan teks (menghilangkan karakter aneh jika ada di baris title file sistem)
-        nama_bahasa=$(echo "$nama_bahasa" | sed 's/[^a-zA-Z]//g')
-        nama_negara=$(echo "$nama_negara" | sed 's/[^a-zA-Z]//g')
-
-        # Jembatan pengaman (fallback otomatis): jika nama penuh tidak ditemukan di file sistem, 
-        # sistem akan memunculkan huruf kapital dari kodenya (misal: EN/US) agar daftar tidak kosong
-        [ -z "$nama_bahasa" ] && nama_bahasa="${lang_code^^}"
-        [ -z "$nama_negara" ] && nama_negara="${negara_code^^}"
-        
-        # Cetak output berurutan sesuai keinginan Anda: [Nomor] Bahasa/Negara
-        printf "[%d] %s/%s\n" "$((l+1))" "$nama_bahasa" "$nama_negara"
+        log_error "Country '$sys_locale' tidak tersedia!"
     done
+
+    echo
+    echo "Selected Locale : $language"
 }
-
-echo "Gunakan PANAH ATAS/BAWAH untuk scroll seluruh daftar bahasa dunia."
-echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
-sleep 2
-
-# 3. Tampilkan seluruh daftar bahasa hasil ekstrak langsung ke less agar bisa di-scroll di TTY
-cetak_daftar_locale | less -QX
-
-echo "=========================================="
-read -p "Masukkan Nomor Pilihan Bahasa Anda: " locale_pilih
-
-if [[ "$locale_pilih" -gt 0 && "$locale_pilih" -le "${#locale_raw[@]}" ]]; then
-    # Mengambil kode sistem asli (misal: id_ID.UTF-8) untuk dimasukkan ke konfigurasi Arch Linux baru
-    sys_locale="${locale_raw[$((locale_pilih-1))]}"
-else
-    log_error "Nomor bahasa tidak valid. Menggunakan default en_US.UTF-8."
-    sys_locale="en_US.UTF-8"
-fi
+select_locale
 
 
 # --- CONFIRMATION SUMMARY ---
