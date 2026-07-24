@@ -123,9 +123,7 @@ done
 read -p "Masukkan nomor Kota: " region
 fi
 
-if [[ "$region" -gt 0 && "$region" -le "${#array[@]}" ]]; then
-    tz="${array[$((region-1))]}"
-fi
+tz=$benua/$region
 
 # --- CONFIRMATION SUMMARY ---
 show_header
