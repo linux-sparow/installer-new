@@ -100,6 +100,8 @@ while [[ -z "$pw" ]]; do
 done
 
 echo
+log_info "Berikut List Timezone Yang Tersedia:"
+SELECTED_TZ=$(timedatectl list-timezones | awk '{print "["NR"]", $0}' | fzf --height 40% --prompt="Ketik nomor/nama timezone: " | awk '{print $2}')
 log_info "Silakan Masukkan Region Anda (contoh: Asia/Jakarta):"
 read -p "  Masukkan Region : " region
 echo
