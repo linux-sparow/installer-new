@@ -101,9 +101,9 @@ done
 
 echo
 log_info "Berikut List Timezone Yang Tersedia:"
-mapfile -t TZ_ARRAY < <(find /usr/share/zoneinfo/ -type f ! -path '*/posix*' ! -path '*/right*' ! -path '*/Etc*' -printf '%P\n' | sort)
-for i in "${!TZ_ARRAY[@]}"; do
-    printf "[%d] %s\n" "$((i+1))" "${TZ_ARRAY[$i]}"
+mapfile -t array < <(find /usr/share/zoneinfo/ -type f -printf '%P\n' | grep -E '^(Africa|America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Indian|Pacific)/' | sort)
+for i in "${!array[@]}"; do
+    printf "[%d] %s\n" "$((i+1))" "${array[$i]}"
 done
 
 echo
