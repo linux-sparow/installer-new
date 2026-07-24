@@ -101,20 +101,27 @@ done
 
 echo
 log_info "Berikut List Timezone Yang Tersedia:"
-mapfile -t array < <(find /usr/share/zoneinfo/ -type f -printf '%P\n' | grep -E '^(Africa|America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Indian|Pacific)/' | sort)
-for i in "${!array[@]}"; do
-    printf "[%d] %s\n" "$((i+1))" "${array[$i]}"
+benua_list=("Africa" "America" "Antarctica" "Asia" "Atlantic" "Australia" "Europe" "Indian" "Pacific")
+
+for i in "${!benua_list[@]}"; do
+    printf "[%d] %s\n" "$((i+1))" "${benua_list[$i]}"
 done
 
-echo
-log_info "Silakan Masukkan Region Anda (contoh: Asia/Jakarta):"
-read -p "  Masukkan Region : " region
-echo
-while [[ -z "$region" ]]; do
-    log_error "Region tidak boleh kosong!"
-    read -sp "  Masukkan Region : " region
-    echo
+read -p "Masukkan nomor Benua: " benua
+
+if [[ "$benua" -gt 0 && "$benua" -le "${#benua_list[@]}" ]]; then
+    pilih_benua="${benua_list[$((benua-1))]}"
+    
+clear
+    
+mapfile -t array < <(find /usr/share/zoneinfo/$pilih_benua -type f -printf '%P\n' | sort)
+    
+for j in "${!array[@]}"; do
+    printf "[%d] %s/%s\n" "$((j+1))" "$pilih_benua" "${array[$j]}"
 done
+
+read -p "Masukkan nomor Kota: " region
+
 
 # --- CONFIRMATION SUMMARY ---
 show_header
