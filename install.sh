@@ -143,8 +143,49 @@ else
 fi
 
 #--- LOCALE ---
+echo
+log_info "Berikut List Huruf Depan Bahasa (Locale) Yang Tersedia:"
+mapfile -t inisial_list < <(grep -E '^[a-z]{2}_' /etc/locale.gen | awk '{print $1}' | cut -d'_' -f1 | sort -u)
 
+for k in "${!inisial_list[@]}"; do
+    printf "[%d] %s\n" "$((k+1))" "${inisial_list[$k]}"
+done
 
+read -p "Masukkan Nomor Inisial Bahasa: " inisial_pilihan
+
+if [[ "$inisial_pilihan" -gt 0 && "$inisial_pilihan" -le "${#inisial_list[@]}" ]]; then
+    pilih_inisial="${inisial_list[$((inisial_pilihan-1))]}"
+    
+    clear
+    
+    # Ambil semua variasi locale utf-8 berdasarkan inisial bahasa yang dipilih
+    mapfile -t locale_array < <(grep -E "^${pilih_inisial}_" /etc/locale.gen | grep "UTF-8" | awk '{print $1}' | sort)
+    
+    cetak_daftar_locale() {
+        for l in "${!locale_array[@]}"; do
+            printf "[%d] %s\n" "$((l+1))" "${locale_array[$l]}"
+        done
+    }
+    
+    echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar format bahasa."
+    echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
+    sleep 2
+    
+    cetak_daftar_locale | less -QX
+    
+    read -p "Masukkan Nomor Variasi Bahasa: " locale_pilih
+    
+    if [[ "$locale_pilih" -gt 0 && "$locale_pilih" -le "${#locale_array[@]}" ]]; then
+        # Mengambil kode locale asli lengkap (contoh: id_ID.UTF-8 atau en_US.UTF-8)
+        locale="${locale_array[$((locale_pilih-1))]}"
+    else
+        log_error "Nomor variasi bahasa tidak valid. Menggunakan default en_US.UTF-8."
+        locale="en_US.UTF-8"
+    fi
+else
+    log_error "Nomor inisial bahasa tidak valid. Menggunakan default en_US.UTF-8."
+    locale="en_US.UTF-8"
+fi
 
 
 # --- CONFIRMATION SUMMARY ---
@@ -158,6 +199,7 @@ echo
 echo -e "  - ${CYAN}Username:${NC} $username"
 echo -e "  - ${CYAN}Hostname:${NC} $hostname"
 echo -e "  - ${CYAN}Region:${NC} $tz"
+echo -e "  - ${CYAN}Region:${NC} $locale"
 echo
 
 read -p "Apakah Anda yakin ingin melanjutkan instalasi? (ketik 'yes' untuk konfirmasi): " confirm
