@@ -76,7 +76,7 @@ while [[ -z "$swap" || ! -b "$swap" ]]; do
     read -p "  4. Partisi Swap: " swap
 done
 
-
+#--- USER & HOSTNAME ---
 echo
 log_info "Konfigurasi Identitas & Kredensial Pengguna:"
 read -p "  Masukkan Username Baru: " username
