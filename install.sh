@@ -125,7 +125,7 @@ if [[ "$benua" -gt 0 && "$benua" -le "${#benua_list[@]}" ]]; then
     
     log_info "Gunakan Panah Atas/Bawah untuk scroll daftar kota."
     log_info "Tekan tombol 'Q' jika sudah menemukan nomor kota Anda."
-    sleep 2
+    sleep 1
     cetak_daftar_kota | less -QX
     
     read -p "Masukkan Nomor Kota: " region
@@ -168,7 +168,7 @@ if [[ "$inisial_pilihan" -gt 0 && "$inisial_pilihan" -le "${#inisial_list[@]}" ]
     
     echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar format bahasa."
     echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
-    sleep 2
+    sleep 1
     
     cetak_daftar_locale | less -QX
     
