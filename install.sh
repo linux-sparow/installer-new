@@ -79,23 +79,33 @@ done
 
 echo
 log_info "Konfigurasi Identitas & Kredensial Pengguna:"
-read -p "  Masukkan Username baru: " username
+read -p "  Masukkan Username Baru: " username
 while [[ -z "$username" ]]; do
     log_error "Username tidak boleh kosong!"
-    read -p "  Masukkan Username baru: " username
+    read -p "  Masukkan Username Baru: " username
 done
 
-read -p "  Masukkan Hostname komputer: " hostname
+read -p "  Masukkan Hostname Komputer: " hostname
 while [[ -z "$hostname" ]]; do
     log_error "Hostname tidak boleh kosong!"
-    read -p "  Masukkan Hostname komputer: " hostname
+    read -p "  Masukkan Hostname Komputer: " hostname
 done
 
-read -sp "  Masukkan Password akun $username : " pw
+read -sp "  Masukkan Password Akun $username : " pw
 echo
 while [[ -z "$pw" ]]; do
     log_error "Password tidak boleh kosong!"
-    read -sp "  Masukkan Password akun $username : " pw
+    read -sp "  Masukkan Password Akun $username : " pw
+    echo
+done
+
+echo
+log_info "Silakan Masukkan Region Anda (contoh: Asia/Jakarta):"
+read -sp "  Masukkan Region : " region
+echo
+while [[ -z "$region" ]]; do
+    log_error "Region tidak boleh kosong!"
+    read -sp "  Masukkan Region : " region
     echo
 done
 
@@ -212,7 +222,7 @@ set -e
 
 # --- 4.1. Timezone & Locale ---
 echo "Mengatur Timezone"
-ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+ln -sf /usr/share/zoneinfo/"$region" /etc/localtime
 hwclock --systohc
 
 echo "Mengatur Locale..."
