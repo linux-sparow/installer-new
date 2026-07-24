@@ -195,7 +195,7 @@ pacstrap /mnt base base-devel wireless-regdb linux $firms $ucodes \
     pipewire pipewire-alsa pipewire-jack pipewire-pulse mkinitcpio \
     discover firefox plasma-login-manager plasma-pa xdg-desktop-portal-kde \
     systemsettings spectacle plasma-desktop breeze-gtk breeze-cursors breeze \
-    plasma-workspace bluedevil bluez-utils konsole digikam --noconfirm &&
+    plasma-workspace bluedevil bluez-utils konsole digikam plymouth plymouth-kcm --noconfirm &&
 
 
 # Configuration
@@ -257,11 +257,13 @@ echo "Memasang GRUB Bootloader ke Partisi Boot Sparow OS..."
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Sparow
 
 echo "Mengonfigurasi parameter Kernel"
+sed -i 's/\(udev\)/\1 plymouth/' /etc/mkinitcpio.conf
 sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="Sparow"/' /etc/default/grub
-sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=UUID='"$root_uuid"' quiet"/' /etc/default/grub
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="root=UUID='"$root_uuid"' quiet splash loglevel=3"/' /etc/default/grub
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
 # Buat konfigurasi GRUB
+mkinitcpio -P
 grub-mkconfig -o /boot/grub/grub.cfg
 
 
