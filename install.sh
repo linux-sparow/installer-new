@@ -145,11 +145,16 @@ fi
 #--- LOCALE ---
 echo
 log_info "Berikut List Bahasa (Locale) Yang Tersedia:"
+
+# 1. Mengambil kode murni UTF-8 dari database sistem
 mapfile -t locale_raw < <(grep "UTF-8" /usr/share/i18n/SUPPORTED | awk '{print $1}' | sort -u)
+
+# 2. Fungsi sederhana menggunakan 'sed' untuk menerjemahkan singkatan kode ke kata penuh
 cetak_daftar_locale() {
     for l in "${!locale_raw[@]}"; do
         local nama_tampil
         
+        # Potong bagian (.UTF-8), lalu ubah paduan singkatan teks menggunakan sed manual yang simpel
         nama_tampil=$(echo "${locale_raw[$l]}" | cut -d'.' -f1 | sed '
             s/^en_US$/English\/United_States/;
             s/^en_GB$/English\/United_Kingdom/;
@@ -173,6 +178,7 @@ echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar format bahasa."
 echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
 sleep 2
 
+# 3. Tampilkan list bahasa yang sudah di-sed langsung ke less agar bisa di-scroll di TTY
 cetak_daftar_locale | less -QX
 
 echo "=========================================="
