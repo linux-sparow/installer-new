@@ -107,23 +107,35 @@ for i in "${!benua_list[@]}"; do
     printf "[%d] %s\n" "$((i+1))" "${benua_list[$i]}"
 done
 
-read -p "Masukkan Nama Benua: " benua
+read -p "Masukkan Nomor Benua: " benua
 
+# Pindahkan deklarasi variabel $tz ke dalam validasi agar lebih aman
 if [[ "$benua" -gt 0 && "$benua" -le "${#benua_list[@]}" ]]; then
     pilih_benua="${benua_list[$((benua-1))]}"
     
-clear
+    clear
     
-mapfile -t array < <(find /usr/share/zoneinfo/$pilih_benua -type f -printf '%P\n' | sort)
+    mapfile -t array < <(find /usr/share/zoneinfo/$pilih_benua -type f -printf '%P\n' | sort)
     
-for j in "${!array[@]}"; do
-    printf "[%d] %s/%s\n" "$((j+1))" "$pilih_benua" "${array[$j]}"
-done
+    for j in "${!array[@]}"; do
+        printf "[%d] %s/%s\n" "$((j+1))" "$pilih_benua" "${array[$j]}"
+    done
 
-read -p "Masukkan Nama Kota: " region
+    read -p "Masukkan Nomor Kota: " region
+    
+    if [[ "$region" -gt 0 && "$region" -le "${#array[@]}" ]]; then
+        pilih_kota="${array[$((region-1))]}"
+        tz="$pilih_benua/$pilih_kota"
+    else
+        log_error "Nomor kota tidak valid. Menggunakan default UTC."
+        tz="UTC"
+    fi
+else
+    log_error "Nomor benua tidak valid. Menggunakan default UTC."
+    tz="UTC"
 fi
 
-tz=$benua/$region
+
 
 # --- CONFIRMATION SUMMARY ---
 show_header
