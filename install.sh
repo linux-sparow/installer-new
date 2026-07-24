@@ -144,47 +144,47 @@ fi
 
 #--- LOCALE ---
 echo
-log_info "Berikut List Huruf Depan Bahasa (Locale) Yang Tersedia:"
-mapfile -t inisial_list < <(sed 's/^#\s*//' /etc/locale.gen | grep -E '^[a-z]{2}_' | awk '{print $1}' | cut -d'_' -f1 | sort -u)
+log_info "Berikut List Bahasa (Locale) Yang Tersedia:"
 
-for k in "${!inisial_list[@]}"; do
-    printf "[%d] %s\n" "$((k+1))" "${inisial_list[$k]}"
-done
+# 1. Ambil database locale resmi, filter yang UTF-8, lalu bersihkan kodenya ke array
+mapfile -t locale_raw < <(grep "UTF-8" /usr/share/i18n/SUPPORTED | awk '{print $1}' | sort -u)
 
-read -p "Masukkan Nomor Inisial Bahasa: " inisial_pilihan
+# 2. Buat fungsi untuk menerjemahkan kode teknis menjadi nama teks "Bahasa/Negara" yang rapi saat dicetak
+cetak_daftar_locale() {
+    for l in "${!locale_raw[@]}"; do
+        # Mengubah en_US menjadi English/United_States, id_ID menjadi Indonesian/Indonesia secara otomatis
+        local nama_tampil
+        nama_tampil=$(echo "${locale_raw[$l]}" | cut -d'.' -f1 | sed -E '
+            s/^en_US$/English\/United_States/;
+            s/^en_GB$/English\/United_Kingdom/;
+            s/^id_ID$/Indonesian\/Indonesia/;
+            s/^ja_JP$/Japanese\/Japan/;
+            s/^de_DE$/German\/Germany/;
+            s/^fr_FR$/French\/France/;
+            s/^zh_CN$/Chinese\/China/;
+            s/_/\//
+        ')
+        printf "[%d] %s (%s)\n" "$((l+1))" "$nama_tampil" "${locale_raw[$l]}"
+    done
+}
 
-if [[ "$inisial_pilihan" -gt 0 && "$inisial_pilihan" -le "${#inisial_list[@]}" ]]; then
-    pilih_inisial="${inisial_list[$((inisial_pilihan-1))]}"
-    
-    clear
-    
-    mapfile -t locale_array < <(sed 's/^#\s*//' /etc/locale.gen | grep -E "^${pilih_inisial}_" | grep "UTF-8" | awk '{print $1}' | sort)
-    
-    cetak_daftar_locale() {
-        for l in "${!locale_array[@]}"; do
-            printf "[%d] %s\n" "$((l+1))" "${locale_array[$l]}"
-        done
-    }
-    
-    echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar format bahasa."
-    echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
-    sleep 1
-    
-    cetak_daftar_locale | less -QX
-    
-    read -p "Masukkan Nomor Variasi Bahasa: " locale_pilih
-    
-    if [[ "$locale_pilih" -gt 0 && "$locale_pilih" -le "${#locale_array[@]}" ]]; then
-        sys_locale="${locale_array[$((locale_pilih-1))]}"
-    else
-        log_error "Nomor variasi bahasa tidak valid. Menggunakan default en_US.UTF-8."
-        sys_locale="en_US.UTF-8"
-    fi
+echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar bahasa."
+echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
+sleep 2
+
+# 3. Tampilkan list langsung menggunakan less agar bisa di-scroll di TTY
+cetak_daftar_locale | less -QX
+
+echo "=========================================="
+read -p "Masukkan Nomor Pilihan Bahasa Anda: " locale_pilih
+
+if [[ "$locale_pilih" -gt 0 && "$locale_pilih" -le "${#locale_raw[@]}" ]]; then
+    # Mengambil kode sistem asli (misal: id_ID.UTF-8) untuk dimasukkan ke sistem Arch baru
+    sys_locale="${locale_raw[$((locale_pilih-1))]}"
 else
-    log_error "Nomor inisial bahasa tidak valid. Menggunakan default en_US.UTF-8."
+    log_error "Nomor bahasa tidak valid. Menggunakan default en_US.UTF-8."
     sys_locale="en_US.UTF-8"
 fi
-
 
 # --- CONFIRMATION SUMMARY ---
 show_header
