@@ -189,7 +189,6 @@ pacstrap /mnt base base-devel wireless-regdb linux $firms $ucodes \
 
 # Configuration
 rm -fr /mnt/usr/share/wallpapers/Next/contents/images/* &&
-rm -fr /mnt/usr/share/plasma/look-and-feel/* &&
 git clone https://github.com/linux-sparow/installer-new.git installer &&
 cp -fr installer/config/* /mnt/ &&
 rm -fr installer &&
