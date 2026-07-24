@@ -302,6 +302,8 @@ set -e
 echo "Mengatur Timezone"
 ln -sf /usr/share/zoneinfo/"$tz" /etc/localtime
 hwclock --systohc
+timedatectl set-ntp true
+timdatectl set-timezone "$tz"
 
 echo "Mengatur Locale..."
 sed -i "s/^#\($language UTF-8\)/\1/" /etc/locale.gen
