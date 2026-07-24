@@ -145,34 +145,34 @@ fi
 #--- LOCALE ---
 echo
 log_info "Berikut List Bahasa (Locale) Yang Tersedia:"
-
-# 1. Ambil database locale resmi, filter yang UTF-8, lalu bersihkan kodenya ke array
 mapfile -t locale_raw < <(grep "UTF-8" /usr/share/i18n/SUPPORTED | awk '{print $1}' | sort -u)
-
-# 2. Buat fungsi untuk menerjemahkan kode teknis menjadi nama teks "Bahasa/Negara" yang rapi saat dicetak
 cetak_daftar_locale() {
     for l in "${!locale_raw[@]}"; do
-        # Mengubah en_US menjadi English/United_States, id_ID menjadi Indonesian/Indonesia secara otomatis
         local nama_tampil
-        nama_tampil=$(echo "${locale_raw[$l]}" | cut -d'.' -f1 | sed -E '
+        
+        nama_tampil=$(echo "${locale_raw[$l]}" | cut -d'.' -f1 | sed '
             s/^en_US$/English\/United_States/;
             s/^en_GB$/English\/United_Kingdom/;
-            s/^id_ID$/Indonesian\/Indonesia/;
+            s/^en_AU$/English\/Australia/;
+            s/^en_CA$/English\/Canada/;
+            s/^id_ID$/English\/Indonesia/;
             s/^ja_JP$/Japanese\/Japan/;
             s/^de_DE$/German\/Germany/;
             s/^fr_FR$/French\/France/;
+            s/^ko_KR$/Korean\/South_Korea/;
             s/^zh_CN$/Chinese\/China/;
+            s/^ms_MY$/Malay\/Malaysia/;
             s/_/\//
         ')
-        printf "[%d] %s (%s)\n" "$((l+1))" "$nama_tampil" "${locale_raw[$l]}"
+        
+        printf "[%d] %s\n" "$((l+1))" "$nama_tampil"
     done
 }
 
-echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar bahasa."
+echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar format bahasa."
 echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
 sleep 2
 
-# 3. Tampilkan list langsung menggunakan less agar bisa di-scroll di TTY
 cetak_daftar_locale | less -QX
 
 echo "=========================================="
@@ -185,6 +185,7 @@ else
     log_error "Nomor bahasa tidak valid. Menggunakan default en_US.UTF-8."
     sys_locale="en_US.UTF-8"
 fi
+
 
 # --- CONFIRMATION SUMMARY ---
 show_header
