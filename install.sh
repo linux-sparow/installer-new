@@ -146,46 +146,55 @@ fi
 echo
 log_info "Berikut List Bahasa (Locale) Yang Tersedia:"
 
-# 1. Mengambil kode murni UTF-8 dari database sistem
-mapfile -t locale_raw < <(grep "UTF-8" /usr/share/i18n/SUPPORTED | awk '{print $1}' | sort -u)
+# 1. Ambil SEMUA baris kode locale asli yang berakhiran UTF-8 dari file /etc/locale.gen
+mapfile -t locale_raw < <(sed 's/^#\s*//' /etc/locale.gen | grep "UTF-8" | awk '{print $1}' | sort -u)
 
-# 2. Fungsi sederhana menggunakan 'sed' untuk menerjemahkan singkatan kode ke kata penuh
+# 2. Fungsi otomatis untuk membaca database internal Linux dan mengubah kode menjadi kata penuh manusia
 cetak_daftar_locale() {
     for l in "${!locale_raw[@]}"; do
-        local nama_tampil
+        local kode_clean lang_code negara_code nama_bahasa nama_negara
         
-        # Potong bagian (.UTF-8), lalu ubah paduan singkatan teks menggunakan sed manual yang simpel
-        nama_tampil=$(echo "${locale_raw[$l]}" | cut -d'.' -f1 | sed '
-            s/^en_US$/English\/United_States/;
-            s/^en_GB$/English\/United_Kingdom/;
-            s/^en_AU$/English\/Australia/;
-            s/^en_CA$/English\/Canada/;
-            s/^id_ID$/English\/Indonesia/;
-            s/^ja_JP$/Japanese\/Japan/;
-            s/^de_DE$/German\/Germany/;
-            s/^fr_FR$/French\/France/;
-            s/^ko_KR$/Korean\/South_Korea/;
-            s/^zh_CN$/Chinese\/China/;
-            s/^ms_MY$/Malay\/Malaysia/;
-            s/_/\//
-        ')
+        # Potong string (contoh: en_US.UTF-8 menjadi en_US, lalu dipisah jadi en dan US)
+        kode_clean=$(echo "${locale_raw[$l]}" | cut -d'.' -f1)
+        lang_code=$(echo "$kode_clean" | cut -d'_' -f1)
+        negara_code=$(echo "$kode_clean" | cut -d'_' -f2)
         
-        printf "[%d] %s\n" "$((l+1))" "$nama_tampil"
+        # Ekstrak kata pertama dari deskripsi nama bahasa resmi di folder internal i18n
+        if [ -f "/usr/share/i18n/locales/$lang_code" ]; then
+            nama_bahasa=$(grep -i '^title' "/usr/share/i18n/locales/$lang_code" | head -n1 | cut -d'"' -f2 | awk '{print $1}')
+        fi
+        
+        # Jika file deskripsi wilayah spesifik (seperti en_US) ada, ambil deskripsinya untuk nama negara
+        if [ -f "/usr/share/i18n/locales/$kode_clean" ]; then
+            nama_negara=$(grep -i '^title' "/usr/share/i18n/locales/$kode_clean" | head -n1 | cut -d'"' -f2 | awk '{print $(NF-1)}')
+        fi
+
+        # Pembersihan teks (menghilangkan karakter aneh jika ada di baris title file sistem)
+        nama_bahasa=$(echo "$nama_bahasa" | sed 's/[^a-zA-Z]//g')
+        nama_negara=$(echo "$nama_negara" | sed 's/[^a-zA-Z]//g')
+
+        # Jembatan pengaman (fallback otomatis): jika nama penuh tidak ditemukan di file sistem, 
+        # sistem akan memunculkan huruf kapital dari kodenya (misal: EN/US) agar daftar tidak kosong
+        [ -z "$nama_bahasa" ] && nama_bahasa="${lang_code^^}"
+        [ -z "$nama_negara" ] && nama_negara="${negara_code^^}"
+        
+        # Cetak output berurutan sesuai keinginan Anda: [Nomor] Bahasa/Negara
+        printf "[%d] %s/%s\n" "$((l+1))" "$nama_bahasa" "$nama_negara"
     done
 }
 
-echo "Gunakan PANAH ATAS/BAWAH untuk scroll daftar format bahasa."
+echo "Gunakan PANAH ATAS/BAWAH untuk scroll seluruh daftar bahasa dunia."
 echo "Tekan tombol 'Q' jika sudah menemukan nomor bahasa Anda."
 sleep 2
 
-# 3. Tampilkan list bahasa yang sudah di-sed langsung ke less agar bisa di-scroll di TTY
+# 3. Tampilkan seluruh daftar bahasa hasil ekstrak langsung ke less agar bisa di-scroll di TTY
 cetak_daftar_locale | less -QX
 
 echo "=========================================="
 read -p "Masukkan Nomor Pilihan Bahasa Anda: " locale_pilih
 
 if [[ "$locale_pilih" -gt 0 && "$locale_pilih" -le "${#locale_raw[@]}" ]]; then
-    # Mengambil kode sistem asli (misal: id_ID.UTF-8) untuk dimasukkan ke sistem Arch baru
+    # Mengambil kode sistem asli (misal: id_ID.UTF-8) untuk dimasukkan ke konfigurasi Arch Linux baru
     sys_locale="${locale_raw[$((locale_pilih-1))]}"
 else
     log_error "Nomor bahasa tidak valid. Menggunakan default en_US.UTF-8."
