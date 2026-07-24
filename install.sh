@@ -304,7 +304,7 @@ ln -sf /usr/share/zoneinfo/"$tz" /etc/localtime
 hwclock --systohc
 
 echo "Mengatur Locale..."
-sed -i "s/^#\($language UTF-8\)/\1/" /etc/locale.gen &&
+sed -i "s/^#\($language UTF-8\)/\1/" /etc/locale.gen
 locale-gen
 
 # --- 4.2. Hostname ---
