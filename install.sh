@@ -137,7 +137,7 @@ echo -e "  - ${RED}Swap Partition:${NC} $swap "
 echo
 echo -e "  - ${CYAN}Username:${NC} $username"
 echo -e "  - ${CYAN}Hostname:${NC} $hostname"
-echo -e "  - ${CYAN}Region:${NC} $region"
+echo -e "  - ${CYAN}Region:${NC} $tz"
 echo
 
 read -p "Apakah Anda yakin ingin melanjutkan instalasi? (ketik 'yes' untuk konfirmasi): " confirm
