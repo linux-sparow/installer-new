@@ -101,7 +101,7 @@ done
 
 echo
 log_info "Silakan Masukkan Region Anda (contoh: Asia/Jakarta):"
-read -sp "  Masukkan Region : " region
+read -p "  Masukkan Region : " region
 echo
 while [[ -z "$region" ]]; do
     log_error "Region tidak boleh kosong!"
