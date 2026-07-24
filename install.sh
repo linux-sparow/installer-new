@@ -123,6 +123,10 @@ done
 read -p "Masukkan nomor Kota: " region
 fi
 
+if [[ "$region" -gt 0 && "$region" -le "${#array[@]}" ]]; then
+    tz="${array[$((region-1))]}"
+fi
+
 # --- CONFIRMATION SUMMARY ---
 show_header
 log_warning "PERHATIAN! Tindakan berikut akan menghapus data pada partisi terpilih:"
@@ -237,7 +241,7 @@ set -e
 
 # --- 4.1. Timezone & Locale ---
 echo "Mengatur Timezone"
-ln -sf /usr/share/zoneinfo/"$region" /etc/localtime
+ln -sf /usr/share/zoneinfo/"$tz" /etc/localtime
 hwclock --systohc
 
 echo "Mengatur Locale..."
