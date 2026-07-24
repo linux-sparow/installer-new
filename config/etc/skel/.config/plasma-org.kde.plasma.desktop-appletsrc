@@ -1,0 +1,5 @@
+[Containments][Applets]
+plugin=org.kde.plasma.kickoff
+
+[Containments][Applets][Configuration][General]
+icon=/usr/share/icons/sparow-logo.png
