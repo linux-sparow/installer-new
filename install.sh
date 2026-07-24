@@ -109,7 +109,6 @@ done
 
 read -p "Masukkan Nomor Benua: " benua
 
-# Pindahkan deklarasi variabel $tz ke dalam validasi agar lebih aman
 if [[ "$benua" -gt 0 && "$benua" -le "${#benua_list[@]}" ]]; then
     pilih_benua="${benua_list[$((benua-1))]}"
     
