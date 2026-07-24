@@ -67,13 +67,13 @@ done
 read -p "  3. Partisi Home : " home
 while [[ -z "$home" || ! -b "$home" ]]; do
     log_error "Partisi '$home' tidak valid."
-    read -p "  3. Partisi Home Amanda OS: " home
+    read -p "  3. Partisi Home Sparow OS: " home
 done
 
 read -p "  4. Partisi Swap : " swap
 while [[ -z "$swap" || ! -b "$swap" ]]; do
     log_error "Partisi '$swap' tidak valid."
-    read -p "  4. Partisi Swap Amanda OS: " swap
+    read -p "  4. Partisi Swap Sparow OS: " swap
 done
 
 
@@ -211,7 +211,7 @@ arch-chroot /mnt /bin/bash <<EOF
 set -e
 
 # --- 4.1. Timezone & Locale ---
-echo "Mengatur Timezone (Asia/Jakarta)..."
+echo "Mengatur Timezone"
 ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 hwclock --systohc
 
